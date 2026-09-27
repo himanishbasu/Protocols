@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iPSC Protocols</title>
+<style>
+  /* =====================================================================
+     COLOR / TYPE TOKENS
+     Change a value here and it updates everywhere it's used.
+     ===================================================================== */
+  :root {
+    --ink: #182530;
+    --ink-soft: #55666d;
+    --accent: #a72c46;
+    --border: #c9d3d1;
+    --warn-bg: #fbf0dc;
+    --warn-border: #e8c98a;
+    --warn-text: #6b4a13;
+    --sans: Arial, Helvetica, sans-serif;
+    --mono: "Courier New", Courier, monospace;
+  }
+
+  /* =====================================================================
+     PAGE CANVAS
+     Each .page is one physical letter page (8.5 x 11 in). On screen they
+     sit on a grey canvas so they read as separate sheets; at print time
+     the canvas disappears and each .page becomes one real page.
+     ===================================================================== */
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: #e7eaec;
+    font-family: var(--sans);
+    color: var(--ink);
+  }
+
+  .page {
+    width: 8.5in;
+    min-height: 11in;
+    margin: 24px auto;
+    padding: 0.55in 0.7in;
+    background: #fff;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.18);
+  }
+
+  @media print {
+    @page { size: letter; margin: 0; }
+    body { background: #fff; }
+    .page {
+      margin: 0;
+      box-shadow: none;
+      width: auto;
+      min-height: auto;
+      page-break-after: always;
+    }
+    .page:last-child { page-break-after: auto; }
+  }
+
+  /* =====================================================================
+     TEXT STYLES
+     ===================================================================== */
+  .doc-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 0 3px;
+  }
+  .doc-subtitle {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin: 0 0 14px;
+  }
+  .step-heading {
+    font-size: 15.5px;
+    font-weight: bold;
+    margin: 14px 0 5px;
+  }
+  .step-heading:first-of-type { margin-top: 0; }
+  p.body-text {
+    font-size: 12.5px;
+    line-height: 1.5;
+    margin: 0 0 6px;
+  }
+  p.note {
+    font-size: 11.5px;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin: 4px 0 6px;
+  }
+  p.subhead {
+    font-size: 12.5px;
+    font-weight: bold;
+    margin: 8px 0 2px;
+  }
+  p.transfer-line {
+    font-size: 12.5px;
+    line-height: 1.5;
+    margin: 8px 0 0;
+  }
+
+  ul.bullets {
+    margin: 4px 0 6px;
+    padding-left: 18px;
+  }
+  ul.bullets li {
+    font-size: 12.5px;
+    line-height: 1.5;
+    margin: 2px 0;
+  }
+
+  ol.lettered {
+    margin: 4px 0 6px;
+    padding-left: 20px;
+  }
+  ol.lettered li {
+    font-size: 12.5px;
+    line-height: 1.5;
+    margin: 2px 0;
+  }
+
+  /* =====================================================================
+     RECIPE / CALCULATOR-STYLE BLOCK (now static values, no inputs)
+     ===================================================================== */
+  .calc {
+    margin: 6px 0 10px;
+  }
+  .calc-title {
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0 0 1px;
+  }
+  .calc-subtitle {
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    margin: 0 0 4px;
+  }
+  .calc-input-line {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    margin: 0 0 4px;
+  }
+  table.calc-table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 420px;
+  }
+  table.calc-table td {
+    padding: 3px 0;
+    font-size: 12px;
+  }
+  table.calc-table tr:not(:first-child) td {
+    border-top: 0.5px solid var(--border);
+  }
+  table.calc-table td.val {
+    text-align: right;
+    font-family: var(--mono);
+    font-weight: bold;
+    color: var(--accent);
+    white-space: nowrap;
+    padding-left: 24px;
+  }
+
+  /* =====================================================================
+     WARNING CALLOUT
+     ===================================================================== */
+  .callout {
+    background: var(--warn-bg);
+    border: 0.75px solid var(--warn-border);
+    border-left: 3px solid #a3691c;
+    border-radius: 3px;
+    padding: 6px 10px;
+    margin: 6px 0;
+    font-size: 12px;
+    color: var(--warn-text);
+  }
+</style>
+</head>
+<body>
+
+<!-- =====================================================================
+     PAGE 1 — iPSC THAWING PROTOCOL
+     ===================================================================== -->
+<div class="page">
+  <h1 class="doc-title">iPSC Thawing Protocol</h1>
+  <p class="doc-subtitle">Thaw, plate, and recover cryopreserved iPSCs.</p>
+
+  <!-- Step 1: Growth Media -->
+  <h2 class="step-heading">1. Growth Media</h2>
+  <p class="body-text">Supplemented StemFlex media, no ROCKi. Make this first — it's the base
+    media used in the thawing/plating recipe below, and for regular feeding once cells have
+    recovered from thawing or passaging.</p>
+  <div class="calc">
+    <p class="calc-title">Growth Media</p>
+    <p class="calc-subtitle">Supplemented StemFlex — stable at 4&deg;C for 1 month</p>
+    <p class="calc-input-line">Total volume needed: 40 mL</p>
+    <table class="calc-table">
+      <tr><td>StemFlex media (Thermo #A3349401)</td><td class="val">36 mL</td></tr>
+      <tr><td>StemFlex media Supplement</td><td class="val">4 mL</td></tr>
+    </table>
+  </div>
+
+  <!-- Step 2: Make thawing media -->
+  <h2 class="step-heading">2. Make thawing media</h2>
+  <p class="body-text">Combine supplemented StemFlex media with ROCKi (Y-27632) at a 1:1000
+    ratio. This is the thawing/plating media used to resuspend the cell pellet and to feed the
+    dish once cells are plated.</p>
+  <div class="calc">
+    <p class="calc-title">Thawing / Plating Media</p>
+    <p class="calc-subtitle">Supplemented StemFlex + ROCKi (1:1000)</p>
+    <p class="calc-input-line">Media volume needed: 11 mL</p>
+    <table class="calc-table">
+      <tr><td>Supplemented StemFlex media</td><td class="val">11 mL</td></tr>
+      <tr><td>ROCKi (Y-27632, 1:1000)</td><td class="val">11 &micro;L</td></tr>
+    </table>
+  </div>
+
+  <!-- Step 3: Prepare plates -->
+  <h2 class="step-heading">3. Prepare plates</h2>
+  <p class="body-text">Coat one CellBind 60 mm dish with Synthemax coating solution.</p>
+  <ul class="bullets">
+    <li>Add 6&ndash;8 mL of diluted Synthemax to the dish and incubate for 2 hours at room
+      temperature in the hood.</li>
+  </ul>
+  <div class="calc">
+    <p class="calc-title">Synthemax Coating Solution</p>
+    <p class="calc-subtitle">1 mL Synthemax + 20 mL water — stable at 4&deg;C for 2 months</p>
+    <p class="calc-input-line">Total volume needed: 21 mL</p>
+    <table class="calc-table">
+      <tr><td>Synthemax stock</td><td class="val">1 mL</td></tr>
+      <tr><td>ddH2O</td><td class="val">20 mL</td></tr>
+    </table>
+  </div>
+
+  <!-- Step 4: Warm up thawing media -->
+  <h2 class="step-heading">4. Warm up thawing media to room temperature</h2>
+
+  <!-- Step 5: Thaw cells -->
+  <h2 class="step-heading">5. Thaw cells</h2>
+  <ul class="bullets">
+    <li>Retrieve the cryovial of cryopreserved iPSCs from liquid nitrogen storage.</li>
+    <li>Thaw quickly in a 37&deg;C bath (~2 minutes).</li>
+    <li>Wipe the vial with 70% ethanol and bring it into the hood.</li>
+    <li>Transfer the thawed cells into a 15 mL tube containing 3 mL DPBS.</li>
+    <li>Centrifuge at 300 &times; g for 5 minutes.</li>
+    <li>Aspirate the supernatant as much as possible, leaving just enough to keep the pellet
+      submerged.</li>
+    <li>Resuspend the pellet in 1 mL thawing media, triturating gently 2&ndash;3 times.</li>
+  </ul>
+  <div class="callout">Do not dissociate to single cells — keep clumps of roughly 10&ndash;100 cells.</div>
+  <ul class="bullets">
+    <li>Aspirate the Synthemax coating solution completely from the dish, without scratching
+      the plate surface.</li>
+    <li>Add 6 mL of the warmed thawing/plating media to the dish.</li>
+    <li>Add the 1 mL cell suspension to the dish.</li>
+    <li>Gently rock the plate to distribute the cells evenly.</li>
+    <li>After 24 hours, replace the media with growth media (supplemented StemFlex media,
+      without ROCKi).</li>
+  </ul>
+
+  <!-- Step 6: Maintenance -->
+  <h2 class="step-heading">6. Maintenance</h2>
+  <p class="body-text">Completely change media every 1&ndash;2 days with supplemented StemFlex.</p>
+</div>
+
+<!-- =====================================================================
+     PAGE 2 — PASSAGING
+     ===================================================================== -->
+<div class="page">
+  <h1 class="doc-title">iPSC Passaging</h1>
+
+  <!-- Step 1: Confluency check -->
+  <h2 class="step-heading">1. Do it when the cells reach ~85% confluency.</h2>
+
+  <!-- Step 2: Prepare fresh plate with Synthemax coating -->
+  <h2 class="step-heading">2. Prepare fresh plate with Synthemax coating</h2>
+  <p class="body-text">Coat one CellBind 60 mm dish with Synthemax coating solution.</p>
+  <ul class="bullets">
+    <li>Add 6&ndash;8 mL of diluted Synthemax to the dish and incubate for 2 hours at room
+      temperature in the hood.</li>
+  </ul>
+  <div class="calc">
+    <p class="calc-title">Synthemax Coating Solution</p>
+    <p class="calc-subtitle">1 mL Synthemax + 20 mL water — stable at 4&deg;C for 2 months</p>
+    <p class="calc-input-line">Total volume needed: 21 mL</p>
+    <table class="calc-table">
+      <tr><td>Synthemax stock</td><td class="val">1 mL</td></tr>
+      <tr><td>ddH2O</td><td class="val">20 mL</td></tr>
+    </table>
+  </div>
+
+  <!-- Step 3: Prepare Accutase -->
+  <h2 class="step-heading">3. Prepare Accutase</h2>
+  <p class="body-text">Dilute stock Accutase 1:3 in PBS.</p>
+  <div class="calc">
+    <p class="calc-title">Accutase Dilution</p>
+    <p class="calc-subtitle">1:3 final dilution in PBS — stable at 4&deg;C for 2 months</p>
+    <p class="calc-input-line">Total volume needed: 15 mL</p>
+    <table class="calc-table">
+      <tr><td>Accutase stock</td><td class="val">5 mL</td></tr>
+      <tr><td>PBS</td><td class="val">10 mL</td></tr>
+    </table>
+  </div>
+
+  <!-- Step 4: Passage cells -->
+  <h2 class="step-heading">4. Passage cells</h2>
+
+  <p class="subhead">Wash cells with 1&times; PBS:</p>
+  <ul class="bullets">
+    <li>Remove all media from the well quickly with suction.</li>
+    <li>Add 5 mL of PBS gently to the side.</li>
+    <li>Remove all PBS from the well with suction.</li>
+  </ul>
+
+  <p class="subhead">Dissociate with Accutase:</p>
+  <ul class="bullets">
+    <li>Add 1 mL Accutase into the well (gently to the side).</li>
+    <li>Remove most of it by suction, leaving only a thin film on the plate.</li>
+    <li>Incubate in the hood for 1 minute.</li>
+    <li>Add 1 mL PBS very gently to the side.</li>
+  </ul>
+  <div class="callout">Cells are very loosely attached at this point — handle gently.</div>
+  <ul class="bullets">
+    <li>Aspirate the Accutase + PBS with suction.</li>
+  </ul>
+  <div class="callout">Keep the plate flat while aspirating the Accutase + PBS.</div>
+  <ul class="bullets">
+    <li>Add 5 mL of StemFlex media.</li>
+    <li>Scrape cells very minimally (1&ndash;2 scrapes) to release them from the bottom of the
+      well.</li>
+    <li>Triturate very minimally (1&ndash;2 times) with a 1 mL pipette to break up large clumps
+      gently.</li>
+    <li>Clumps of 50&ndash;100 cells are ideal.</li>
+  </ul>
+  <p class="transfer-line">Transfer cells (~1.5 mL cell suspension, 1:3 passage) dropwise onto
+    the new coated plate with fresh media.</p>
+</div>
+
+<!-- =====================================================================
+     PAGE 3 — FREEZING
+     ===================================================================== -->
+<div class="page">
+  <h1 class="doc-title">iPSC Freezing</h1>
+
+  <!-- Step 1 -->
+  <h2 class="step-heading">1. Pre-cool Mr. Frostie to 4&deg;C (takes 1 hour).</h2>
+
+  <!-- Step 2: Make freezing media -->
+  <h2 class="step-heading">2. Make freezing media</h2>
+  <p class="body-text">KSR supplement with 10% DMSO. Pre-cool to 4&deg;C.</p>
+  <div class="calc">
+    <p class="calc-title">Freezing Media</p>
+    <p class="calc-subtitle">KSR supplement with 10% DMSO — pre-cool to 4&deg;C</p>
+    <p class="calc-input-line">Total volume needed: 11.1 mL</p>
+    <table class="calc-table">
+      <tr><td>KSR supplement</td><td class="val">10 mL</td></tr>
+      <tr><td>DMSO</td><td class="val">1.1 mL</td></tr>
+    </table>
+  </div>
+  <p class="note">If in doubt, this media can be filter sterilized through a 0.22 &micro;m
+    filter.</p>
+
+  <!-- Step 3 -->
+  <h2 class="step-heading">3. Pre-label cryotubes, loosen caps, and keep ready in the hood
+    (personnel, cell type, passage, date).</h2>
+
+  <!-- Step 4 -->
+  <h2 class="step-heading">4. Freeze cells at 70&ndash;80% confluency, one tube per well.</h2>
+
+  <!-- Step 5 -->
+  <h2 class="step-heading">5. Wash cells with 1&times; PBS (as in passaging).</h2>
+
+  <!-- Step 6: Dissociate with Accutase -->
+  <h2 class="step-heading">6. Dissociate with Accutase (1:3 in PBS)</h2>
+  <ol class="lettered" type="a">
+    <li>Add 1 mL Accutase into the well.</li>
+    <li>Remove immediately.</li>
+    <li>Incubate in the hood for 1 minute.</li>
+    <li>Add 1 mL PBS.</li>
+    <li>Aspirate the Accutase + PBS.</li>
+    <li>Add 1 mL of pre-cooled freezing media (KSR supplement with 10% DMSO).</li>
+    <li>Scrape cells to release them from the bottom of the well.</li>
+    <li>Triturate well with a 1 mL pipette to break up clumps gently.</li>
+  </ol>
+  <ul class="bullets">
+    <li>Just a few passes are enough to break large clumps into smaller ones — don't make
+      single cells; clumps should have roughly 100&ndash;1000 cells each.</li>
+  </ul>
+
+  <!-- Step 7 -->
+  <h2 class="step-heading">7. Transfer to cryotubes.</h2>
+
+  <!-- Step 8 -->
+  <h2 class="step-heading">8. Put cryotubes in Mr. Frostie.</h2>
+  <div class="callout">IMPORTANT: DMSO is toxic to the cells. Perform Steps 4f to 6 as fast as
+    possible.</div>
+
+  <!-- Step 9 -->
+  <h2 class="step-heading">9. Put Mr. Frostie in -80&deg;C overnight.</h2>
+
+  <!-- Step 10 -->
+  <h2 class="step-heading">10. Transfer the cryotubes to liquid nitrogen (LN2).</h2>
+</div>
+
+</body>
+</html>
