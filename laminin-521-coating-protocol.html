@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laminin-521 Coating</title>
+<style>
+  /* =====================================================================
+     COLOR / TYPE TOKENS (same as ipsc-protocols-static.html)
+     Change a value here and it updates everywhere it's used.
+     ===================================================================== */
+  :root {
+    --ink: #182530;
+    --ink-soft: #55666d;
+    --accent: #a72c46;
+    --border: #c9d3d1;
+    --warn-bg: #fbf0dc;
+    --warn-border: #e8c98a;
+    --warn-text: #6b4a13;
+    --info-bg: #eaf1f4;
+    --info-border: #b9cdd6;
+    --info-text: #24414f;
+    --sans: Arial, Helvetica, sans-serif;
+    --mono: "Courier New", Courier, monospace;
+  }
+
+  /* =====================================================================
+     PAGE CANVAS
+     Each .page is one physical letter page (8.5 x 11 in).
+     ===================================================================== */
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: #e7eaec;
+    font-family: var(--sans);
+    color: var(--ink);
+  }
+
+  .page {
+    width: 8.5in;
+    min-height: 11in;
+    margin: 24px auto;
+    padding: 0.4in 0.65in;
+    background: #fff;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.18);
+  }
+
+  @media print {
+    @page { size: letter; margin: 0; }
+    body { background: #fff; }
+    .page {
+      margin: 0;
+      box-shadow: none;
+      width: auto;
+      min-height: auto;
+      page-break-after: always;
+    }
+    .page:last-child { page-break-after: auto; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+
+  /* =====================================================================
+     TEXT STYLES
+     ===================================================================== */
+  .doc-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 0 3px;
+  }
+  .doc-subtitle {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin: 0 0 14px;
+  }
+  .step-heading {
+    font-size: 15.5px;
+    font-weight: bold;
+    margin: 10px 0 3px;
+  }
+  .step-heading:first-of-type { margin-top: 0; }
+  p.body-text {
+    font-size: 12.5px;
+    line-height: 1.5;
+    margin: 0 0 6px;
+  }
+  p.subhead {
+    font-size: 12.5px;
+    font-weight: bold;
+    margin: 8px 0 2px;
+  }
+
+  ul.bullets {
+    margin: 4px 0 6px;
+    padding-left: 18px;
+  }
+  ul.bullets li {
+    font-size: 12.5px;
+    line-height: 1.45;
+    margin: 1px 0;
+  }
+
+  /* =====================================================================
+     RECIPE BLOCK (static values)
+     ===================================================================== */
+  .calc {
+    margin: 6px 0 10px;
+  }
+  .calc-title {
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0 0 1px;
+  }
+  .calc-subtitle {
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    margin: 0 0 4px;
+  }
+  .calc-input-line {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    margin: 0 0 4px;
+  }
+  table.calc-table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 420px;
+  }
+  table.calc-table td {
+    padding: 3px 0;
+    font-size: 12px;
+  }
+  table.calc-table tr:not(:first-child) td {
+    border-top: 0.5px solid var(--border);
+  }
+  table.calc-table td.val {
+    text-align: right;
+    font-family: var(--mono);
+    font-weight: bold;
+    color: var(--accent);
+    white-space: nowrap;
+    padding-left: 24px;
+  }
+
+  /* Vessel volumes: two short tables side by side */
+  .vessel-cols {
+    display: flex;
+    gap: 36px;
+  }
+  .vessel-cols table.calc-table { max-width: 260px; }
+
+  /* =====================================================================
+     CALLOUTS: .callout = warning, .callout.info = background note
+     ===================================================================== */
+  .callout {
+    background: var(--warn-bg);
+    border: 0.75px solid var(--warn-border);
+    border-left: 3px solid #a3691c;
+    border-radius: 3px;
+    padding: 6px 10px;
+    margin: 6px 0;
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--warn-text);
+  }
+  .callout.info {
+    background: var(--info-bg);
+    border-color: var(--info-border);
+    border-left-color: #3d6577;
+    color: var(--info-text);
+  }
+</style>
+</head>
+<body>
+
+<!-- =====================================================================
+     PAGE 1: LAMININ-521 COATING
+     ===================================================================== -->
+<div class="page">
+  <h1 class="doc-title">Laminin-521 Coating Protocol</h1>
+  <p class="doc-subtitle">Coat culture vessels with Laminin-521 at 5 &micro;g/mL (1:20 from the 100 &micro;g/mL stock).</p>
+
+  <!-- Step 1: Materials -->
+  <h2 class="step-heading">1. Materials</h2>
+  <ul class="bullets">
+    <li>Laminin-521 #200-0117 (100 &micro;g/mL stock)</li>
+    <li>DMEM/F-12, or DPBS with calcium and magnesium</li>
+    <li>Sterile 1.5 mL tubes for aliquots</li>
+  </ul>
+  <div class="callout info">
+    Calcium and magnesium are required in the diluent. Calcium is needed for laminin to assemble
+    correctly on the surface, and magnesium is needed for the integrin binding site to work.
+    DMEM/F-12 already contains both (1.05 mM Ca, 0.71 mM Mg), so it can be used directly.
+    Plain PBS without calcium and magnesium cannot.
+  </div>
+
+  <!-- Step 2: Aliquot the stock -->
+  <h2 class="step-heading">2. Aliquot the stock (first thaw only)</h2>
+  <ul class="bullets">
+    <li>Thaw the vial slowly at 2&ndash;8&deg;C.</li>
+  </ul>
+  <div class="callout">Do not thaw at room temperature or in a 37&deg;C water bath.</div>
+  <ul class="bullets">
+    <li>Mix by gently inverting the tube. Do not vortex.</li>
+    <li>Aliquot 500 &micro;L per tube. A 500 &micro;g vial (5 mL at 100 &micro;g/mL) gives ~10 aliquots.</li>
+    <li>Store the aliquots at &minus;80&deg;C. Each aliquot is thawed once only.</li>
+    <li>A thawed aliquot can be kept at 2&ndash;8&deg;C for up to 3 months. Do not refreeze it.</li>
+  </ul>
+
+  <!-- Step 3: Make working solution -->
+  <h2 class="step-heading">3. Make working solution</h2>
+  <ul class="bullets">
+    <li>Thaw one 500 &micro;L aliquot by resuspending in 500 &micro;L cold DMEM/F-12.</li>
+  </ul>
+  <div class="callout">Thaw the aliquot on ice and keep the DMEM/F-12 cold. A sudden temperature change causes Laminin-521 to coagulate.</div>
+  <ul class="bullets">
+    <li>Mix very gently.</li>
+    <li>Add 9 mL of DMEM/F-12 or DPBS with Ca&sup2;&#8314;/Mg&sup2;&#8314; to make 10 mL total.</li>
+    <li>Final dilution is 1:20.</li>
+  </ul>
+
+  <!-- Step 4: Coat vessels -->
+  <h2 class="step-heading">4. Coat vessels</h2>
+  <p class="body-text">Add the working solution to the vessel:</p>
+  <div class="calc vessel-cols">
+    <table class="calc-table">
+      <tr><td>6 cm dish</td><td class="val">2 mL</td></tr>
+      <tr><td>10 cm dish</td><td class="val">5 mL</td></tr>
+      <tr><td>T-75 flask</td><td class="val">7 mL</td></tr>
+    </table>
+    <table class="calc-table">
+      <tr><td>6-well plate</td><td class="val">1 mL / well</td></tr>
+      <tr><td>12-well plate</td><td class="val">0.5 mL / well</td></tr>
+      <tr><td>24-well plate</td><td class="val">200 &micro;L / well</td></tr>
+    </table>
+  </div>
+  <ul class="bullets">
+    <li>Tilt the vessel to spread the solution over the entire surface.</li>
+    <li>Incubate at 37&deg;C for 2 hours, then proceed to seeding.</li>
+  </ul>
+  <p class="subhead">If not using immediately</p>
+  <ul class="bullets">
+    <li>Seal with parafilm and incubate at 4&deg;C overnight instead.</li>
+    <li>Coated vessels can be held at 4&deg;C for up to 4 weeks.</li>
+    <li>If held longer than 1&ndash;2 weeks, check for evaporation and top up with DPBS
+      (Ca&sup2;&#8314;/Mg&sup2;&#8314;) as needed.</li>
+  </ul>
+
+  <!-- Step 5: Before seeding -->
+  <h2 class="step-heading">5. Before seeding</h2>
+  <ul class="bullets">
+    <li>Aspirate the coating solution immediately before seeding. No need to wash.</li>
+  </ul>
+  <div class="callout">Aspirate only immediately before seeding so the surface does not dry out.</div>
+</div>
+
+</body>
+</html>
